@@ -1,0 +1,36 @@
+{
+  "ignition": {
+    "version": "3.1.0"
+  },
+  "passwd": {
+    "users": [
+      {
+        "name": "coreos",
+        "sshAuthorizedKeys": [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDIGap+5PixugWg7aYpPgPCuniz+d+RQjfv2cd5CwpS3V9ndzSqwHWVE8x1sRSaikFa+cKPTjllh43+5okS4PjjS6dqjGHvI4T4EHeMHmHHlzFJitHBitaI2dyddmwBeGB69cT7rVO+LDNlIe6ZyFChcTAo+Ravj38x/E5sHEvVD53TBqTlvO3REFmfQALbIHBGR5Ij1QNVr8PNwWf8EWic1ii/kkmv9WgVQCSDuUczMosZOQhewGDx08QgR7kHnDXU3NdvT6MHS6HObOJNluxWpEYQ9kEeVSXHQP+jPurYhd/oQU1nNN6sr5fRDv2DlgQxvmPYBBQKRWXzxFek0LGT9FzjeOpH/SFjFDwNey7NC6Ur0IiuylGoyzAVrxFBGEIQFsXJMpqGPELTGKG7mU7iJ8mklURZQSX126MaUlWvEn1QEhBmfu395Zkn0/GqPho/+gY7MwFqeAR62r7Gj8fUQWnsRNGa8t9fY1mycrsyyZD6TPfUt+7RJK4bUr/tVhcU7F4nUX6/UHIEotzJqJQ11oc+vY1LNMz3B7mvKT3wwtPqYmvo2ZSdsLPuS+EQnO52W8tej8fsaQ5s6WkbzoDmpGJMsVKotkq3XU+YIyfAsLFf32qXVl17k1jL2DUuVtfy0Vqmjgj6lCw35iptXF5sHMEjfZH5PxgDRt33NChHxQ== battlestation"
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "files": [
+      {
+        "overwrite": true,
+        "path": "/etc/NetworkManager/system-connections/ens3.nmconnection",
+        "contents": {
+          "source": "data:,%5Bconnection%5D%0Atype%3Dethernet%0Aid%3D'Custom%20interface'%0Ainterface-name%3Dens3%0A%0A%5Bipv4%5D%0Amethod%3Dmanual%0Aaddresses%3D192.168.88.101%2F24%0Agateway%3D192.168.88.1%0Adns%3D1.1.1.1%3B8.8.8.8%0A"
+        },
+        "mode": 384
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "contents": "[Unit]\nDescription=Run CoreOS Installer\nRequires=coreos-installer-pre.target\nAfter=coreos-installer-pre.target\nAfter=network-online.target\nWants=network-online.target\nOnFailure=emergency.target\nOnFailureJobMode=replace-irreversibly\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/coreos-installer install -n --ignition-url https://raw.githubusercontent.com/codementation/ignitions/master/installer-ign-slave00.json /dev/vda \nExecStart=/usr/bin/systemctl --no-block poweroff\nStandardOutput=kmsg+console\nStandardError=kmsg+console\n\n[Install]\nRequiredBy=default.target\n",
+        "enabled": true,
+        "name": "coreos-installer.service"
+      }
+    ]
+  }
+}
