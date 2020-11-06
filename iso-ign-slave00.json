@@ -27,7 +27,7 @@
   "systemd": {
     "units": [
       {
-        "contents": "[Unit]\nDescription=Run CoreOS Installer\nRequires=coreos-installer-pre.target\nAfter=coreos-installer-pre.target\nAfter=network-online.target\nWants=network-online.target\nOnFailure=emergency.target\nOnFailureJobMode=replace-irreversibly\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/coreos-installer install -n --ignition-url https://raw.githubusercontent.com/codementation/ignitions/master/installer-ign-slave00.json /dev/vda \nExecStart=/usr/bin/systemctl --no-block poweroff\nStandardOutput=kmsg+console\nStandardError=kmsg+console\n\n[Install]\nRequiredBy=default.target\n",
+        "contents": "[Unit]\nDescription=Run CoreOS Installer\nRequires=coreos-installer-pre.target\nAfter=coreos-installer-pre.target\nAfter=network-online.target\nWants=network-online.target\nOnFailure=emergency.target\nOnFailureJobMode=replace-irreversibly\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/coreos-installer install -n --ignition-url https://raw.githubusercontent.com/codementation/ignitions/master/installer-ign-slave00.json /dev/vda \nExecStart=/usr/bin/systemctl --no-block reboot\nStandardOutput=kmsg+console\nStandardError=kmsg+console\n\n[Install]\nRequiredBy=default.target\n",
         "enabled": true,
         "name": "coreos-installer.service"
       }
